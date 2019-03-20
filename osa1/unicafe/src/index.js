@@ -7,11 +7,9 @@ const App = () => {
     const [neutral, setNeutral] = useState(0)
     const [bad, setBad] = useState(0)
 
-    const headers = [{
-        caption: 'Anna palautetta'
-    }, {
-        caption: 'Statistiikka'
-    }
+    const headers = [
+        { caption: 'Anna palautetta' },
+        { caption: 'Statistiikka' }
     ]
     const Header = (props) => {
         return (
@@ -30,19 +28,38 @@ const App = () => {
     const increaseBad = () => {
         setBad(bad + 1)
     }
-    const Good=()=>{
+    const Good = () => {
         return (
-            <div>hyvä: {good}</div>
+            <div>Hyvä: {good}</div>
         )
     }
-    const Neutral=()=>{
+    const Neutral = () => {
         return (
-            <div> neutaraali: {neutral} </div>
+            <div>Neutaraali: {neutral} </div>
         )
     }
-    const Bad=()=>{
+    const Bad = () => {
         return (
-            <div>huono: {bad}</div>
+            <div>Huono: {bad}</div>
+        )
+    }
+    const Total = () => {
+
+        return (
+            <div>Yhteensä: {good + neutral + bad} </div>
+        )
+    }
+    const Average = () => {
+        let average = bad / good
+        return (
+            <div>Keskiarvo: {average}</div>
+
+        )
+    }
+    const PositiveAverage = () => {
+        let positive = good / (good + neutral + bad) * 100
+        return (
+            <div>Positiivisia: {positive} %</div>
         )
     }
 
@@ -52,19 +69,16 @@ const App = () => {
         <div>
             <Header id='0' />
 
-            <button onClick={increaseGood}>
-                Hyvä
-      </button>
-            <button onClick={increaseNeutral}>
-                Neutraali
-      </button>
-            <button onClick={increaseBad}>
-                Huono
-      </button>
+            <button onClick={increaseGood}>Hyvä</button>
+            <button onClick={increaseNeutral}>Neutraali</button>
+            <button onClick={increaseBad}>Huono</button>
             <Header id='1' />
             <Good />
             <Neutral />
             <Bad />
+            <Total />
+            <Average />
+            <PositiveAverage />
         </div>
     )
 }
