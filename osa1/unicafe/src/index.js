@@ -1,26 +1,67 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = () => {
+const Header = (caption) => {
+    const headers = [
+        { caption: 'Anna palautetta' },
+        { caption: 'Statistiikka' }
+    ]
+    
+    return (
+        <div>
+            <h2>{headers[caption.id].caption}</h2>
+        </div>
+    )
+}
+
+const Average = ({ good, neutral, bad }) => {
+
+    const avg = (good - bad) / (good + bad + neutral)
+    
+    if (isNaN(avg)) {
+        return (
+            <div>Keskiarvo: -</div>
+        )
+    }
+
+
+    return (
+        <div>Keskiarvo:{avg}</div>
+    )
+}
+const Total = ({ good, neutral, bad }) => {
+
+
+    const sum = good + neutral + bad
+    return (
+        <div>Yhteensä: {sum} </div>
+    )
+}
+const PositiveAverage = ({good , neutral , bad}) => {
+    const positive = good / (good + neutral + bad) * 100
+    if (isNaN(positive)) {
+    return (
+        <div>Positiivisia: -</div>
+    )}
+    return (
+        <div>Positiivisia: {positive} %</div>
+    )
+}
+
+
+
+const App = (props) => {
     // tallenna napit omaan tilaansa
     const [good, setGood] = useState(0)
     const [neutral, setNeutral] = useState(0)
     const [bad, setBad] = useState(0)
 
-    const headers = [
-        { caption: 'Anna palautetta' },
-        { caption: 'Statistiikka' }
-    ]
-    const Header = (props) => {
-        return (
-            <div>
-                <h2>{headers[props.id].caption}</h2>
-            </div>
-        )
-    }
+
+
 
     const increaseNeutral = () => {
         setNeutral(neutral + 1)
+
     }
     const increaseGood = () => {
         setGood(good + 1)
@@ -28,40 +69,10 @@ const App = () => {
     const increaseBad = () => {
         setBad(bad + 1)
     }
-    const Good = () => {
-        return (
-            <div>Hyvä: {good}</div>
-        )
-    }
-    const Neutral = () => {
-        return (
-            <div>Neutaraali: {neutral} </div>
-        )
-    }
-    const Bad = () => {
-        return (
-            <div>Huono: {bad}</div>
-        )
-    }
-    const Total = () => {
 
-        return (
-            <div>Yhteensä: {good + neutral + bad} </div>
-        )
-    }
-    const Average = () => {
-        let average = bad / good
-        return (
-            <div>Keskiarvo: {average}</div>
 
-        )
-    }
-    const PositiveAverage = () => {
-        let positive = good / (good + neutral + bad) * 100
-        return (
-            <div>Positiivisia: {positive} %</div>
-        )
-    }
+
+  
 
 
 
@@ -73,12 +84,13 @@ const App = () => {
             <button onClick={increaseNeutral}>Neutraali</button>
             <button onClick={increaseBad}>Huono</button>
             <Header id='1' />
-            <Good />
-            <Neutral />
-            <Bad />
-            <Total />
-            <Average />
-            <PositiveAverage />
+            <div>Hyvä: {good}</div>
+            <div>Neutraali: {neutral}</div>
+            <div>Huono: {bad}</div>
+
+            <Total good={good} bad={bad} neutral={neutral} />
+            <Average good={good} bad={bad} neutral={neutral} />
+            <PositiveAverage good={good} bad={bad} neutral={neutral}/>
         </div>
     )
 }
