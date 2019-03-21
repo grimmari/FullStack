@@ -6,7 +6,7 @@ const Header = (caption) => {
         { caption: 'Anna palautetta' },
         { caption: 'Statistiikka' }
     ]
-    
+
     return (
         <div>
             <h2>{headers[caption.id].caption}</h2>
@@ -14,10 +14,29 @@ const Header = (caption) => {
     )
 }
 
+const Statistics = (props) => {
+    
+    const { good, neutral, bad } = props
+    if(good>0){
+    return (
+        <div>
+            <div>Hyvä: {good}</div>
+            <div>Neutraali: {neutral}</div>
+            <div>Huono: {bad}</div>
+            <Total good={good} bad={bad} neutral={neutral} />
+            <Average good={good} bad={bad} neutral={neutral} />
+            <PositiveAverage good={good} bad={bad} neutral={neutral} />
+        </div>
+    )}
+    return (
+        <div>Ei Yhtään palautetta annettu</div>
+    )
+}
+
 const Average = ({ good, neutral, bad }) => {
 
     const avg = (good - bad) / (good + bad + neutral)
-    
+
     if (isNaN(avg)) {
         return (
             <div>Keskiarvo: -</div>
@@ -37,16 +56,23 @@ const Total = ({ good, neutral, bad }) => {
         <div>Yhteensä: {sum} </div>
     )
 }
-const PositiveAverage = ({good , neutral , bad}) => {
+const PositiveAverage = ({ good, neutral, bad }) => {
     const positive = good / (good + neutral + bad) * 100
     if (isNaN(positive)) {
-    return (
-        <div>Positiivisia: -</div>
-    )}
+        return (
+            <div>Positiivisia: -</div>
+        )
+    }
     return (
         <div>Positiivisia: {positive} %</div>
     )
 }
+
+const Button = ({ handleClick, text }) => (
+    <button onClick={handleClick}>
+      {text}
+    </button>
+  )
 
 
 
@@ -72,25 +98,22 @@ const App = (props) => {
 
 
 
-  
+
 
 
 
     return (
         <div>
             <Header id='0' />
-
-            <button onClick={increaseGood}>Hyvä</button>
-            <button onClick={increaseNeutral}>Neutraali</button>
-            <button onClick={increaseBad}>Huono</button>
+            <Button handleClick={()=> increaseGood()} text='Hyva'/>
+            <Button handleClick={()=> increaseNeutral()} text='Neutraali'/>
+            <Button handleClick={()=> increaseBad()} text='Huono'/>
+           
             <Header id='1' />
-            <div>Hyvä: {good}</div>
-            <div>Neutraali: {neutral}</div>
-            <div>Huono: {bad}</div>
+            <Statistics good={good} bad={bad} neutral={neutral} />
 
-            <Total good={good} bad={bad} neutral={neutral} />
-            <Average good={good} bad={bad} neutral={neutral} />
-            <PositiveAverage good={good} bad={bad} neutral={neutral}/>
+
+
         </div>
     )
 }
